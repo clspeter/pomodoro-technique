@@ -2,17 +2,76 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Home: NextPage = () => {
   const [breakLength, setBreakLength] = useState(5);
   const [sessionLength, setSessionLength] = useState(25);
   const [timer, setTimer] = useState(25 * 60);
+  const [timerString, setTimerString] = useState("25:00");
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    const minutes = Math.floor(timer / 60);
+    const seconds = timer % 60;
+    setTimerString(
+      `${minutes < 10 ? "0" + minutes : minutes}:${
+        seconds < 10 ? "0" + seconds : seconds
+      }`
+    );
+    if (!isRunning) return;
+
+    const interval = setInterval(() => {
+      setTimer(timer - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timer, isRunning]);
+
+  useEffect(() => {
+    setTimer(sessionLength * 60);
+  }, [sessionLength]);
+
+  const handleStartStop = () => {
+    if (isRunning) {
+      console.log("stop");
+    } else {
+      console.log("start");
+    }
+    setIsRunning(!isRunning);
+  };
+
   const handleReset = () => {
     setBreakLength(5);
     setSessionLength(25);
+    setIsRunning(false);
     setTimer(25 * 60);
   };
+
+  const handleBeakDecrement = () => {
+    if (isRunning) return;
+    if (breakLength > 1) {
+      setBreakLength(breakLength - 1);
+    }
+  };
+  const handleBeakIncrement = () => {
+    if (isRunning) return;
+    if (breakLength < 60) {
+      setBreakLength(breakLength + 1);
+    }
+  };
+  const handleSessionDecrement = () => {
+    if (isRunning) return;
+    if (sessionLength > 1) {
+      setSessionLength(sessionLength - 1);
+    }
+  };
+  const handleSessionIncrement = () => {
+    if (isRunning) return;
+    if (sessionLength < 60) {
+      setSessionLength(sessionLength + 1);
+    }
+  };
+
   return (
     <div className="">
       <Head>
@@ -28,25 +87,13 @@ const Home: NextPage = () => {
               Break
             </div>
             <div className="flex flex-row justify-center">
-              <div
-                className="cursor-pointer"
-                id="break-decrement"
-                onClick={() => {
-                  setBreakLength(breakLength - 1);
-                }}
-              >
+              <button id="break-decrement" onClick={handleBeakDecrement}>
                 -
-              </div>
+              </button>
               <div id="break-length">{breakLength}</div>
-              <div
-                className="cursor-pointer"
-                id="break-increment"
-                onClick={() => {
-                  setBreakLength(breakLength + 1);
-                }}
-              >
+              <button id="break-increment" onClick={handleBeakIncrement}>
                 +
-              </div>
+              </button>
             </div>
           </div>
           <div className="basis-32">
@@ -54,25 +101,13 @@ const Home: NextPage = () => {
               Session
             </div>
             <div className="flex flex-row justify-center">
-              <div
-                className="cursor-pointer"
-                id="session-decreament"
-                onClick={() => {
-                  setSessionLength(sessionLength - 1);
-                }}
-              >
+              <button id="session-decrement" onClick={handleSessionDecrement}>
                 -
-              </div>
+              </button>
               <div id="session-length">{sessionLength}</div>
-              <div
-                className="cursor-pointer"
-                id="session-increament"
-                onClick={() => {
-                  setSessionLength(sessionLength + 1);
-                }}
-              >
+              <button id="session-increment" onClick={handleSessionIncrement}>
                 +
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -81,20 +116,20 @@ const Home: NextPage = () => {
             Time
           </div>
           <div className="text-center text-5xl" id="time-left">
-            {" "}
-            25:00
+            {timerString}
           </div>
         </div>
         <div className="flex flex-row justify-center">
-          <div className="basis-16" id="start_stop">
-            Start
-          </div>
-          <div className="basis-16" id="">
-            Pause
-          </div>
-          <div className="basis-16" id="reset">
+          <button
+            className="basis-16"
+            id="start_stop"
+            onClick={handleStartStop}
+          >
+            Start/Pause
+          </button>
+          <button className="basis-16" id="reset" onClick={handleReset}>
             Reset
-          </div>
+          </button>
         </div>
       </div>
       <script

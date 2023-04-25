@@ -22,13 +22,13 @@ export const timerSlice = createSlice({
             // doesn't actually mutate the state because it uses the Immer library,
             // which detects changes to a "draft state" and produces a brand new
             // immutable state based off those changes
-            state.value += 1
+            state.break += 1
         },
         decrement: (state) => {
-            state.value -= 1
+            state.break -= 1
         },
         incrementByAmount: (state, action: PayloadAction<number>) => {
-            state.value += action.payload
+            state.break += action.payload
         },
     },
 })
