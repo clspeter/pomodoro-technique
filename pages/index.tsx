@@ -1,6 +1,8 @@
 import type { NextPage } from "next";
 import Script from "next/script";
 import Head from "next/head";
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import { VscDebugStart, VscDebugPause, VscDebugRestart } from "react-icons/vsc";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useEffect, useState, useRef } from "react";
@@ -118,13 +120,23 @@ const Home: NextPage = () => {
             <div className="text-center" id="break-label">
               Break
             </div>
-            <div className="flex flex-row justify-center">
-              <button id="break-decrement" onClick={handleBeakDecrement}>
-                -
+            <div className="flex flex-row items-center justify-center">
+              <button
+                id="break-decrement"
+                className="h-[24px] rounded bg-orange-800 active:bg-orange-500"
+                onClick={handleBeakDecrement}
+              >
+                <AiOutlineMinus />
               </button>
-              <div id="break-length">{breakLength}</div>
-              <button id="break-increment" onClick={handleBeakIncrement}>
-                +
+              <div id="break-length" className="mx-2">
+                {breakLength}
+              </div>
+              <button
+                id="break-increment"
+                className="h-[24px] rounded bg-orange-800 active:bg-orange-500"
+                onClick={handleBeakIncrement}
+              >
+                <AiOutlinePlus />
               </button>
             </div>
           </div>
@@ -132,13 +144,23 @@ const Home: NextPage = () => {
             <div className="text-center" id="session-label">
               Session
             </div>
-            <div className="flex flex-row justify-center">
-              <button id="session-decrement" onClick={handleSessionDecrement}>
-                -
+            <div className="flex flex-row items-center justify-center">
+              <button
+                id="session-decrement"
+                className="h-[24px] rounded bg-orange-800 active:bg-orange-500"
+                onClick={handleSessionDecrement}
+              >
+                <AiOutlineMinus />
               </button>
-              <div id="session-length">{sessionLength}</div>
-              <button id="session-increment" onClick={handleSessionIncrement}>
-                +
+              <div id="session-length" className="mx-2">
+                {sessionLength}
+              </div>
+              <button
+                id="session-increment"
+                className="h-[24px] rounded bg-orange-800 active:bg-orange-500"
+                onClick={handleSessionIncrement}
+              >
+                <AiOutlinePlus />
               </button>
             </div>
           </div>
@@ -152,16 +174,24 @@ const Home: NextPage = () => {
           </div>
           <audio src="/time-up-ringtone.mp3" id="beep" ref={audioRef}></audio>
         </div>
-        <div className="flex flex-row justify-center">
+        <div className="mb-2 flex flex-row justify-center gap-4">
           <button
-            className="basis-16"
+            className="rounded bg-orange-800 active:bg-orange-500"
             id="start_stop"
             onClick={handleStartStop}
           >
-            Start/Pause
+            {isRunning ? (
+              <VscDebugPause size={30} />
+            ) : (
+              <VscDebugStart size={30} />
+            )}
           </button>
-          <button className="basis-16" id="reset" onClick={handleReset}>
-            Reset
+          <button
+            className="rounded bg-orange-800 active:bg-orange-500"
+            id="reset"
+            onClick={handleReset}
+          >
+            <VscDebugRestart size={30} />
           </button>
         </div>
       </div>
