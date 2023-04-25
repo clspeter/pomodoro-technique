@@ -26,12 +26,16 @@ const Home: NextPage = () => {
 
     if (timer === 0) {
       if (isBreak) {
-        setTimer(sessionLength * 60);
-        setIsBreak(false);
+        setTimeout(() => {
+          setTimer(sessionLength * 60);
+          setIsBreak(false);
+        }, 1000);
         audioRef.current?.play();
       } else {
-        setTimer(breakLength * 60);
-        setIsBreak(true);
+        setTimeout(() => {
+          setTimer(breakLength * 60);
+          setIsBreak(true);
+        }, 1000);
         audioRef.current?.play();
       }
     }
@@ -60,14 +64,14 @@ const Home: NextPage = () => {
   };
 
   const handleReset = () => {
+    setIsBreak(false);
     setBreakLength(5);
     setSessionLength(25);
     setIsRunning(false);
     setTimer(25 * 60);
 
     if (audioRef.current) {
-      audioRef.current.pause;
-      audioRef.current.currentTime = 0;
+      audioRef.current.load();
     }
   };
 
